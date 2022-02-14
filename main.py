@@ -5,27 +5,18 @@ import time
 from time import sleep
 from os import system
 
+#Command Variable
 enable_memo=False
 memo_text=""
 mecro_tread=None
 
+#Constant(Folder)
 PATH="D:\\Py6\\VoiceProtocol\\record"
-LINK="link\\"
+LINK="link\\" #lnk files
 
+#Link
 Program_List={
-    "페인트":"Paint.NET",
-    "브라우저":"Chrome",
-    "디스코드":"Discord",
-    "카카오톡":"KaKaoTalk",
-    "오버워치":"Overwatch",
-    "발로란트":"VALORANT",
-    "브라우저":"Chrome",
-    "음식 제조기":"CookingSim",
-    "메신저":"Messenger",
-    "마인크래프트":"Minecraft",
-    "오토마우스":"Automouse",
-    "러시아 키보드":"RussiaKeyboard",
-    "가루":"PowderToy"
+    "CALL NAME":"lnk File",
 }
 
 def Log(title, content):
@@ -37,24 +28,25 @@ def RunProgram(file_name):
 
 def isRun(text):
     for i in Program_List:
-        if i+" 열어 줘" in text:
+        if i+" open" in text:
             RunProgram(Program_List[i])
             return True
-        if i+" 실행" in text:
+        if i+" execute" in text:
             RunProgram(Program_List[i])
             return True
     return False
 
+#Commands
 def Process(text):
     global isMecro
     global enable_memo
     global memo_text
 
-    if "메모 활성화" in text:
+    if "memo enable" in text:
         memo_text=""
         enable_memo=True
         Log("Command", "Memo Enabled")
-    elif "메모 비활성화" in text:
+    elif "memo disable" in text:
         f=open("memo.txt","w",encoding="utf-8")
         f.writelines(memo_text)
         f.close()
@@ -65,6 +57,8 @@ def Process(text):
         return True    
     elif isRun(text):
         return True
+    
+#Voice -> Text
 cnt=0
 def Voice_Recognition():
     global cnt
@@ -93,5 +87,5 @@ while True:
     if enable_memo:
         memo_text+=text
     Process(text)
-    if "관리자 권한 나가기" in text:
+    if "administer exit" in text:
         break
